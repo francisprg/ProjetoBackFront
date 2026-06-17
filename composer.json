@@ -1,0 +1,9 @@
+{
+
+    "name": "franc/trabalhobackfront",
+    "autoload": {
+        "psr-4": {
+            "trabalhobackfront\\" : "TRABALHOBACKFRONT/"
+        }
+    }
+}

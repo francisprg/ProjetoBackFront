@@ -119,6 +119,9 @@ switch ($acao) {
         $livroController->listarlivros();
         break;
 
+    case 'listarlivrosjson':
+    $livroController->listarlivrosJson();
+    break;
 
     case 'deletarlivro':
         $livroController->deletarlivro($_GET['id']);
@@ -150,4 +153,3 @@ switch ($acao) {
         require __DIR__ . '../view/login.php';
         break;
 }
-

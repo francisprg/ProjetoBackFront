@@ -47,7 +47,18 @@
     <hr>
 
 <?php endforeach; ?>
-    
+
+
+
+<h1>Livros</h1>
+
+<button onclick="carregarLivros()">
+    Carregar livros
+</button>
+
+<div id="listaLivros"></div>
+
+<script src="/public/js/main.js"></script>
 
 
 

@@ -41,6 +41,16 @@
     }
 
 
+    public function listarlivrosJson()
+{
+    $livros = $this->dao->listarlivros();
+
+    header('Content-Type: application/json');
+
+    echo json_encode($livros);
+}
+
+
 
     public function cadastrarLivro(array $dados) {
 

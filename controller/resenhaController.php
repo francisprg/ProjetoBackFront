@@ -51,74 +51,73 @@ class ResenhaController {
 
 
 
-    public function criarresenha(array $dados)
+  public function criarresenha(array $dados)
 {
-    // LEITOR
-    $dadosLeitor = $this->daoleitor->buscarPorId(
-        $_SESSION['leitor']['idleitor']
-    );
+    $erros = [];
+
+    $dadosLeitor = $this->daoleitor->buscarPorId($_SESSION['leitor']['idleitor']);
+    $dadosLivro  = $this->daolivro->buscarLivroId($dados['idLivro']);
 
     $leitor = new LeitorModel(
-    $dadosLeitor['nomeleitor'],
-    $dadosLeitor['sobrenomeleitor'],
-    $dadosLeitor['apelidoleitor'],
-    $dadosLeitor['emailleitor'],
-    $dadosLeitor['senhaleitor'],
-    $dadosLeitor['datanascleitor'],
-    $dadosLeitor['bioleitor'],
-    $dadosLeitor['fotoleitor'],
-    $dadosLeitor['idleitor']
+        $dadosLeitor['nomeleitor'],
+        $dadosLeitor['sobrenomeleitor'],
+        $dadosLeitor['apelidoleitor'],
+        $dadosLeitor['emailleitor'],
+        $dadosLeitor['senhaleitor'],
+        $dadosLeitor['datanascleitor'],
+        $dadosLeitor['fotoleitor'],
+        $dadosLeitor['bioleitor'],
+        $dadosLeitor['idleitor']
     );
 
-    $dadosLivro = $this->daolivro->buscarLivroId(
-        $dados['idLivro']
+    $autor   = new Autor($dadosLivro['idautor'], $dadosLivro['nomeautor']);
+    $editora = new Editora($dadosLivro['ideditora'], $dadosLivro['nomeeditora']);
+
+    $livroObj = new Livro(
+        $dadosLivro['idlivro'],
+        $dadosLivro['titulo'],
+        $dadosLivro['isbn'],
+        $dadosLivro['numeropaginas'],
+        $dadosLivro['ano'],
+        $dadosLivro['idioma'],
+        $dadosLivro['capalivro'],
+        $autor,
+        $editora
     );
 
-    $autor = new Autor(
-        $dadosLivro['idautor'],
-        $dadosLivro['nomeautor']
-    );
+    $resenha = new Resenha(null, $dados['textoresenha'], date('Y-m-d'), $leitor, $livroObj);
 
 
-   
-    $editora = new Editora(
-        $dadosLivro['ideditora'],
-        $dadosLivro['nomeeditora']
-    );
+    $livro    = $dadosLivro;
+    $resenhas = $this->dao->exibirResenha($dadosLivro['idlivro']);
 
 
-    $livro = new Livro(
-    $dadosLivro['idlivro'],
-    $dadosLivro['titulo'],
-    $dadosLivro['isbn'],
-    $dadosLivro['numeropaginas'],
-    $dadosLivro['ano'],
-    $dadosLivro['idioma'],
-    $dadosLivro['capalivro'],
-    $autor,
-    $editora
-);
 
-    // RESENHA
-    $resenha = new Resenha(
-        null,
-        $dados['textoresenha'],
-        date('Y-m-d'),
-        $leitor,
-        $livro
-    );
+  $erros = $leitor->validar();
 
-
-    $this->dao->criarResenha($resenha);
+    if ($this->dao->resenhaExisteLeitor($dadosLivro['idlivro'], $dadosLeitor['idleitor'])) {
+    $erros[] = "Você já possui uma resenha para este livro.";
 }
 
+    if (empty($erros)) {
+    $this->dao->criarResenha($resenha);
+    header('Location: index.php?acao=visualizarlivro&id=' . $dadosLivro['idlivro']);
+    exit;
+}
+
+    require __DIR__ . "/../view/visualizarlivro.php";
+}
  
+
+
+
+
     public function deletarresenha (int $id) {
 
 
     $this->dao->deletarresenha($id);
 
-  header("Location: index.php?acao=visualizarperfil&id={$_SESSION['leitor']['idleitor']}");
+    header("Location: index.php?acao=visualizarperfil&id={$_SESSION['leitor']['idleitor']}");
     exit;
 
 

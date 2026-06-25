@@ -1,7 +1,5 @@
 <?php
-
 session_start();
-
 define('APP_RUNNING', true);
 
 
@@ -10,13 +8,12 @@ require __DIR__ . '/controller/resenhaController.php';
 require __DIR__ . '/controller/leitorController.php';
 require __DIR__ . '/controller/livroController.php';
 require __DIR__ . '/controller/authController.php';
-require __DIR__ . '/controller/avaliacaoController.php';
 
 $resenhaController = new ResenhaController();
 $leitorController = new leitorController();
 $livroController = new livroController();
 $authController = new authController();
-$avaliacaoController = new avaliacaoController();
+
 
 
 
@@ -35,15 +32,8 @@ switch ($acao) {
     break;
         
     case 'home':
-
-    require_once __DIR__ . '/DAO/livroDAO.php';
-    $daoLivro = new livroDAO();
-    $livros = $daoLivro->listarlivros();
-
-    $livrosAvaliados = $daoLivro->listaMelhoresAvaliados();
-
     require __DIR__ . '/view/home.php';
-     break;
+    break;
 
 
     case 'logout':
@@ -72,6 +62,12 @@ switch ($acao) {
 
     
     //REQUISICOES LEITOR
+
+
+    case 'listarleitores';
+        require __DIR__ . '/view/listaleitores.php';
+    break;
+
 
     case 'cadastrar';
         $leitorController->cadastrarLeitor($_POST);
@@ -115,14 +111,6 @@ switch ($acao) {
         $livroController->cadastrarLivro($_POST);
         break;
         
-    case 'listarlivros':
-        $livroController->listarlivros();
-        break;
-
-    case 'listarlivrosjson':
-    $livroController->listarlivrosJson();
-    break;
-
     case 'deletarlivro':
         $livroController->deletarlivro($_GET['id']);
         break;
@@ -140,14 +128,6 @@ switch ($acao) {
         $livroController->visualizarLivro($_GET['id']);
         break;
     
-    
-    // REQUISICOES AVALIACAO 
-
-
-    case 'avaliarlivro';
-        $avaliacaoController->criarAvaliacao($_POST);
-        break;
-
 
     default:
         require __DIR__ . '../view/login.php';

@@ -1,90 +1,97 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <link rel="stylesheet" href="/public/css/style.css">
+    <title>Perfil — LiAqui</title>
 </head>
+
 <body>
-    
-<?php
+    <?php
     if (!isset($_SESSION['leitor'])) {
-    header('Location: login.php');
-    exit;
+        header('Location: login.php');
+        exit;
     }
-?>
+    ?>
 
+    <?php require __DIR__ . "/partials/header.php" ?>
 
+    <main class="perfil">
+        <div class="container-perfil">
+            <!-- Sidebar esquerda -->
+            <aside class="perfil-sidebar">
+                <img src="imagens/<?= $leitor['fotoleitor'] ?>" alt="Foto de <?= $leitor['nomeleitor'] ?>" class="perfil-foto">
 
-<?php if ($ehDonoDoPerfil): ?>
-    <h1>Meu Perfil</h1>
-<?php else: ?>
-    <h1>Perfil do usuário</h1>
-<?php endif; ?>
+                <h2 class="perfil-nome"><?= $leitor['nomeleitor'] ?></h2>
+                <span class="perfil-usuario">@<?= $leitor['apelidoleitor'] ?></span>
+                <p class="perfil-bio"><?= $leitor['bioleitor'] ?></p>
 
+                <?php if ($ehDonoDoPerfil): ?>
+                    <a href="index.php?acao=editarLeitor&id=<?= (int)$_SESSION['leitor']['idleitor'] ?>" class="perfil-btn">
+                        Editar Perfil
+                    </a>
+                    <a href="index.php?acao=deletarleitor&id=<?= (int)$_SESSION['leitor']['idleitor'] ?>" class="perfil-btn-deletar">
+                        Deletar minha conta
+                    </a>
+                <?php endif; ?>
 
-<p><strong>Nome:</strong> <?= $leitor['nomeleitor'] ?></p>
+                <div class="perfil-stats">
+                    <div class="perfil-stat">
+                        <span class="perfil-stat-label">RESENHAS</span>
+                        <strong><?= count($resenhas) ?></strong>
+                    </div>
+                </div>
+            </aside>
 
-<p><strong>Usuário:</strong> <?= $leitor['apelidoleitor'] ?></p>
+            <!-- Conteúdo direita -->
+            <section class="perfil-conteudo">
+                <h1>
+                    <?php if ($ehDonoDoPerfil): ?>
+                        Meu Perfil
+                    <?php else: ?>
+                        Perfil do Usuário
+                    <?php endif; ?>
+                </h1>
 
-<?php if ($ehDonoDoPerfil): ?>
-    <a href="index.php?acao=editarLeitor&id=<?= (int) ($_SESSION['leitor']['idleitor']) ?>">
-        Editar Perfil
-    </a>
-<?php endif; ?>
+                <h2 class="perfil-secao-titulo">Histórico de resenhas</h2>
 
-<h1>Historico de resenhas</h1>
+                <?php if (empty($resenhas)): ?>
+                    <p class="perfil-vazio">Nenhuma resenha publicada ainda.</p>
+                <?php endif; ?>
 
-<?php foreach ($resenhas as $resenha): ?>
+                <?php foreach ($resenhas as $resenha): ?>
+                    <div class="cartao-resenha">
+                        <img
+                            src="imagens/<?= $resenha['capalivro'] ?>"
+                            alt="Capa de <?= htmlspecialchars($resenha['titulo']) ?>"
+                            class="cartao-resenha-capa">
 
-    <h3>
-        <img 
-            src="../imagens/<?= $resenha['capalivro'] ?>"
-            width="100"
-        >   
-         <p>
-            <?= htmlspecialchars($resenha['titulo']) ?>
-        </p>
-        
+                        <div class="cartao-resenha-info">
+                            <h3><?= htmlspecialchars($resenha['titulo']) ?></h3>
+                            <?php if (!empty($resenha['textoresenha'])): ?>
+                                <p class="cartao-resenha-texto"><?= htmlspecialchars($resenha['textoresenha']) ?></p>
+                            <?php endif; ?>
 
-        <p>
-            <?= htmlspecialchars($resenha['textoresenha']) ?>
-        </p>
+                            <span class="cartao-resenha-data"><?= $resenha['dataresenha'] ?></span>
 
-        <small>
-            <?= $resenha['dataresenha'] ?>
-        </small>
+                            <?php if ($ehDonoDoPerfil && !empty($resenha['textoresenha'])): ?>
+                                <div class="cartao-resenha-acoes">
+                                    <a href="index.php?acao=editarresenha&id=<?= (int)($resenha['idresenha'] ?? 0) ?>">Editar</a>
+                                    <a href="index.php?acao=deletarresenha&id=<?= (int)($resenha['idresenha'] ?? 0) ?>" class="acao-deletar">Deletar</a>
+                                </div>
+                            <?php endif; ?>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
 
-    </div>
+            </section>
 
+        </div>
+    </main>
 
-    <?php if ($ehDonoDoPerfil): ?>
-    <a href="index.php?acao=deletarresenha&id=<?= (int) ($resenha['idresenha'] ?? 0) ?>">Deletar resenha</a>
-
-    <a href="index.php?acao=editarresenha&id=<?= (int) ($resenha['idresenha'] ?? 0) ?>">Editar Resenha</a>
-    <?php endif; ?>    
-
-
-
-
-<?php endforeach; ?>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    <?php require __DIR__ . "/partials/footer.php" ?>
 </body>
+
 </html>

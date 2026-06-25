@@ -20,8 +20,8 @@ class LeitorModel
     string $emailLeitor,
     string $senhaLeitor,
     string $datanascLeitor,
-    string $bioLeitor,
     string $fotoLeitor,
+    ?string $bioLeitor = '',
     ?int $idLeitor = null
 ) {
     $this->idLeitor = $idLeitor;

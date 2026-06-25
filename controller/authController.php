@@ -50,6 +50,7 @@ class authController {
         }
     
     $_SESSION['leitor'] = [
+    'fotoleitor' => $pessoa['fotoleitor'],
     'idleitor' => $pessoa['idleitor'],
     'nome' => $pessoa['nomeleitor'],
     'admin' => $pessoa['admin']

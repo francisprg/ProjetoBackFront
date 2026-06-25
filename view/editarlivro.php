@@ -125,7 +125,7 @@
         </select>
 
         <br><br>
-
+                <button><a href="index.php?acao=visualizarlivro&id=${livro.idlivro}">Deletar resenha</button>
         <button type="submit">
             Atualizar Livro
         </button>

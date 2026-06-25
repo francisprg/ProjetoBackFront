@@ -92,6 +92,7 @@
         </select>
 
         <br><br>
+        <img src="im" alt="">
 
         <label>Editora</label>
         <select name="idEditora" required>

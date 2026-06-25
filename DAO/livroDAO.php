@@ -1,12 +1,13 @@
-<?php 
+<?php
 
 
 
-    require_once __DIR__ . '/../config/Database.php';
-    require_once __DIR__ . '/../model/livroModel.php';
+require_once __DIR__ . '/../config/Database.php';
+require_once __DIR__ . '/../model/livroModel.php';
 
 
-Class LivroDAO {
+class LivroDAO
+{
 
 
     private PDO $conexao;
@@ -16,10 +17,11 @@ Class LivroDAO {
         $this->conexao = Database::conectar();
     }
 
-    
-    public function cadastrarLivro(Livro $livro) {
 
-    $sql = "INSERT INTO Livro (
+    public function cadastrarLivro(Livro $livro)
+    {
+
+        $sql = "INSERT INTO Livro (
         titulo,
         isbn,
         numeroPaginas,
@@ -39,68 +41,42 @@ Class LivroDAO {
         :idEditora
     )";
 
-    $stmt = $this->conexao->prepare($sql);
+        $stmt = $this->conexao->prepare($sql);
 
-    $stmt->execute([
-        ':titulo' => $livro->getTitulo(),
-        ':isbn' => $livro->getIsbn(),
-        ':numeroPaginas' => $livro->getNumeroPaginas(),
-        ':ano' => $livro->getAno(),
-        ':idioma' => $livro->getIdioma(),
-        ':fotoLivro' => $livro->getFotoLivro(),
+        $stmt->execute([
+            ':titulo' => $livro->getTitulo(),
+            ':isbn' => $livro->getIsbn(),
+            ':numeroPaginas' => $livro->getNumeroPaginas(),
+            ':ano' => $livro->getAno(),
+            ':idioma' => $livro->getIdioma(),
+            ':fotoLivro' => $livro->getFotoLivro(),
 
-        ':idAutor' => $livro
-            ->getAutor()
-            ->getIdAutor(),
+            ':idAutor' => $livro
+                ->getAutor()
+                ->getIdAutor(),
 
-        ':idEditora' => $livro
-            ->getEditora()
-            ->getIdEditora()
-    ]);
-
-
-
+            ':idEditora' => $livro
+                ->getEditora()
+                ->getIdEditora()
+        ]);
     }
 
 
-    public function listarlivros() {
+    public function deletarLivro($id)
+    {
 
 
-    $sql = "SELECT 
-        livro.*,
-        autor.nomeautor,
-        editora.nomeeditora
-    FROM livro
-    INNER JOIN autor
-    ON livro.idautor = autor.idautor
-    INNER JOIN editora
-    ON livro.ideditora = editora.ideditora";
+        $sql = "DELETE FROM livro WHERE idlivro = :id";
 
-    $stmt = $this->conexao->prepare($sql);
-    $stmt->execute();
+        $stmt = $this->conexao->prepare($sql);
 
-    return $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-    }
-
-
-    
-    public function deletarLivro ($id) {
-
-
-    $sql = "DELETE FROM livro WHERE idlivro = :id";
-
-    $stmt = $this->conexao->prepare($sql);
-
-    $stmt->execute([':id' => $id]);
-
-
+        $stmt->execute([':id' => $id]);
     }
 
 
     public function atualizarLivro(array $dados)
-{
-    $sql = 'UPDATE Livro
+    {
+        $sql = 'UPDATE Livro
             SET titulo = :titulo,
                 isbn = :isbn,
                 numeroPaginas = :numeroPaginas,
@@ -111,28 +87,29 @@ Class LivroDAO {
                 idEditora = :idEditora
             WHERE idLivro = :idLivro';
 
-    $stmt = $this->conexao->prepare($sql);
+        $stmt = $this->conexao->prepare($sql);
 
-    return $stmt->execute([
-        ':titulo' => $dados['titulo'],
-        ':isbn' => $dados['isbn'],
-        ':numeroPaginas' => $dados['numeroPaginas'],
-        ':ano' => $dados['ano'],
-        ':idioma' => $dados['idioma'],
-        ':fotoLivro' => $dados['fotoLivro'],
-        ':idAutor' => $dados['idAutor'],
-        ':idEditora' => $dados['idEditora'],
-        ':idLivro' => $dados['idLivro']
-    ]);
-}
-
-
+        return $stmt->execute([
+            ':titulo' => $dados['titulo'],
+            ':isbn' => $dados['isbn'],
+            ':numeroPaginas' => $dados['numeroPaginas'],
+            ':ano' => $dados['ano'],
+            ':idioma' => $dados['idioma'],
+            ':fotoLivro' => $dados['fotoLivro'],
+            ':idAutor' => $dados['idAutor'],
+            ':idEditora' => $dados['idEditora'],
+            ':idLivro' => $dados['idLivro']
+        ]);
+    }
 
 
 
-    public function buscarLivroid(int $id) {
 
-    $sql = "SELECT 
+
+    public function buscarLivroid(int $id)
+    {
+
+        $sql = "SELECT 
                 livro.*,
                 autor.nomeautor,
                 editora.nomeeditora
@@ -143,48 +120,21 @@ Class LivroDAO {
                 ON livro.ideditora = editora.ideditora
             WHERE livro.idlivro = :id";
 
-    $stmt = $this->conexao->prepare($sql);
+        $stmt = $this->conexao->prepare($sql);
 
-    $stmt->execute([
-        ':id' => $id
-    ]);
+        $stmt->execute([
+            ':id' => $id
+        ]);
 
-    return $stmt->fetch(PDO::FETCH_ASSOC);
-    
-
-
+        return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
 
 
 
-
-    public function listaMelhoresAvaliados()
-{
-    $sql = "SELECT
-                l.capalivro,
-                l.idlivro,
-                l.titulo,
-                AVG(a.qntestrelas) AS media,
-                COUNT(a.idavaliacao) AS total_avaliacoes
-            FROM livro l
-            INNER JOIN avaliacao a
-                ON a.idlivro = l.idlivro
-            GROUP BY l.idlivro, l.titulo
-            ORDER BY media DESC
-            LIMIT 10";
-
-    $stmt = $this->conexao->prepare($sql);
-
-    $stmt->execute();
-
-    return $stmt->fetchAll(PDO::FETCH_ASSOC);
-}
-
-
     public function buscarLivro(string $termo)
-    {   
-    $sql = "SELECT l.*
+    {
+        $sql = "SELECT l.*
 FROM livro l
 JOIN autor a
     ON l.idautor = a.idautor
@@ -194,42 +144,28 @@ WHERE l.titulo ILIKE :termo
    OR a.nomeautor ILIKE :termo
    OR e.nomeeditora ILIKE :termo";
 
-    $stmt = $this->conexao->prepare($sql);
+        $stmt = $this->conexao->prepare($sql);
 
-    $stmt->execute([
-        ':termo' => "%{$termo}%"
-    ]);
+        $stmt->execute([
+            ':termo' => "%{$termo}%"
+        ]);
 
-    return $stmt->fetchAll(PDO::FETCH_ASSOC);
-}
-
-
-
-
-
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
 
+    
+
+    public function listarLivros()
+    {
+    $sql = "SELECT * FROM Livro";
+
+    $stmt = $this->conexao->prepare($sql);
+    $stmt->execute();
+
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 
 
+}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-?>

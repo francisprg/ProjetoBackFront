@@ -2,6 +2,7 @@
 
 require_once __DIR__ . '/leitorModel.php';
 require_once __DIR__ . '/livroModel.php';
+require_once __DIR__ . '/../DAO/resenhaDAO.php';
 
 class Resenha
 {
@@ -77,6 +78,23 @@ class Resenha
     {
         $this->livro = $livro;
     }
+
+    public function validar(): array {
+    $erros = [];
+
+    if (empty(trim($this->textoResenha))) {
+        $erros[] = "O texto da resenha não pode ser vazio.";
+    }
+
+    if (strlen($this->textoResenha) < 10) {
+        $erros[] = "A resenha deve ter pelo menos 10 caracteres.";
+    }
+
+    return $erros;
+}
+
+
+
 
 
 

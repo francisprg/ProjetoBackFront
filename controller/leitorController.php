@@ -32,6 +32,7 @@
      $nome_arquivo = $_FILES['fotoLeitor']['name'];
     $arquivo_temporario = $_FILES['fotoLeitor']['tmp_name'];
 
+
     $caminho = __DIR__ . "/../imagens/" . $nome_arquivo;
 
     if (move_uploaded_file($arquivo_temporario, $caminho)) {
@@ -52,59 +53,36 @@
 
 
 
-    public function cadastrarLeitor (array $dados) {
-
+   public function cadastrarLeitor(array $dados) {
 
     $imagem = $this->processarUpload();
 
-    $leitor = new LeitorModel (
-        
+    $leitor = new LeitorModel(
         $dados['nomeLeitor'],
         $dados['sobrenomeLeitor'],
         $dados['apelidoLeitor'],
         $dados['emailLeitor'],
         $dados['senhaLeitor'],
         $dados['datanascLeitor'],
-        $dados['bioLeitor'],
         $imagem
     );
 
     $erros = $leitor->validar();
 
-    if($erros = '') {
-         $this->dao->cadastrarLeitor($leitor);
+    if (empty($erros)) {
+        $this->dao->cadastrarLeitor($leitor);
         header('Location: view/login.php');
         exit;
     }
-    
-    require __DIR__ . '/../view/cadastro.php';
 
-
-
-    }
-
-
-
-
-
-
-
-    public function listarLeitores () {
-
-    $leitores = $this->dao->listarleitores();
-
-    require __DIR__ . '/../view/listarleitor.php';
-
-
-    }
+    require __DIR__ . '/../view/login.php';
+}
 
 
 
     public function deletarLeitor (int $id) {
 
     $this->dao->deletarLeitor($id);
-
-    require __DIR__ . '/../view/cadastro.php';
 
     }  
 
@@ -142,7 +120,6 @@
     exit;
 }
 
-
     public function visualizarperfil (int $id) {
 
 
@@ -150,16 +127,12 @@
 
     $resenhas = $this->daoresenha->exibirResenhaLeitor($id);
 
-
     $ehDonoDoPerfil =
     isset($_SESSION['leitor']) &&
     $_SESSION['leitor']['idleitor'] == $id;
 
 
     require __DIR__ . '/../view/perfilleitor.php';
-
-
-
 
 
 

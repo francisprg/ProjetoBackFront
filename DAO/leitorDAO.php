@@ -46,7 +46,7 @@
 
 
 
-    public function cadastrarLeitor (leitorModel $leitor) {
+    public function cadastrarLeitor (LeitorModel $leitor) {
 
     $sql = "INSERT INTO Leitor (
     nomeLeitor,
@@ -55,7 +55,6 @@
     emailLeitor,
     senhaLeitor,
     datanascLeitor,
-    bioLeitor,
     fotoLeitor
 ) VALUES (
     :nomeLeitor,
@@ -64,7 +63,6 @@
     :emailLeitor,
     :senhaLeitor,
     :datanascLeitor,
-    :bioLeitor,
     :fotoLeitor
 )";
 
@@ -80,7 +78,6 @@
         PASSWORD_DEFAULT
     ),
     ':datanascLeitor' => $leitor->getDatanascLeitor(),
-    ':bioLeitor' => $leitor->getBioLeitor(),
     ':fotoLeitor' => $leitor->getFotoLeitor()
 ]);
     }
@@ -130,28 +127,13 @@
         ':bioLeitor' => $dados['bioLeitor'],
         ':fotoLeitor' => $dados['fotoLeitor']
     ]);
+
 }
 
-
-
-
-
-    
-
-
-
-
-
-
+   
 
 
     }
-
-
-
-
-
-
 
 
 

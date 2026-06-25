@@ -1,149 +1,95 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <link rel="stylesheet" href="/public/css/style.css">
+    <title>LiAqui — Livro</title>
 </head>
-<body
 
+<body>
 
+    <?php require __DIR__ . "/partials/header.php" ?>
 
-
-
-
-
-<?php
+    <?php
     if (!isset($_SESSION['leitor'])) {
-    header('Location: login.php');
-    exit;
+        header('Location: login.php');
+        exit;
     }
-?>
-    <p>
+    ?>
 
-        <img 
-            src="../imagens/<?= $livro['capalivro'] ?>"
-            width="100"
-        >
+    <main class="livro">
+        <section class="container-livro">
 
-        <br><br>
+            <aside class="livro-sidebar">
+                <img src="../imagens/<?= $livro['capalivro'] ?>" alt="Capa de <?= htmlspecialchars($livro['titulo']) ?>">
+            </aside>
 
-        Título: <?= $livro['titulo'] ?> <br>
-        ISBN: <?= $livro['isbn'] ?> <br>
-        Páginas: <?= $livro['numeropaginas'] ?> <br>
-        Ano: <?= $livro['ano'] ?> <br>
-        Idioma: <?= $livro['idioma'] ?> <br>
+            <div class="conteudo-livro">
+                <h1><?= htmlspecialchars($livro['titulo']) ?></h1>
+                <h2><?= htmlspecialchars($livro['nomeautor']) ?></h2>
 
-        Autor: <?= $livro['nomeautor'] ?> <br>
-        Editora: <?= $livro['nomeeditora'] ?> <br>
+                <div class="info-livro">
+                    <div class="isbn-livro">
+                        <strong>ISBN:</strong> <?= $livro['isbn'] ?>
+                    </div>
+                    <div class="paginas-livro">
+                        <strong>Páginas:</strong> <?= $livro['numeropaginas'] ?>
+                    </div>
+                    <div class="idioma-livro">
+                        <strong>Idioma:</strong> <?= $livro['idioma'] ?>
+                    </div>
+                </div>
 
-        <h1>Avalie</h1>
+                <section class="container-resenha-avaliacao">
+                        <div class="container-resenha">
+                            <?php if ($minhaResenha): ?>
+                                <h3>Sua resenha</h3>
+                                <p><?= htmlspecialchars($minhaResenha['textoresenha']) ?></p>
+                                <a href="index.php?acao=editarresenha&id=<?= $minhaResenha['idresenha'] ?>">
+                                    Editar resenha
+                                </a>
+                            <?php else: ?>
+                                <form method="POST" id="form-resenha" action="index.php?acao=criarresenha">
+                                    <input type="hidden" name="idLivro" value="<?= $livro['idlivro'] ?>">
+                                    <label for="textoresenha">Sua resenha</label>
+                                    <textarea id="textoresenha" name="textoresenha" placeholder="Escreva sua resenha..."></textarea>
+                                    <div id="erro-resenha" role="alert"></div>
+                                    <button type="submit">Criar resenha</button>
+                                </form>
+                            <?php endif; ?>
+                        </div>
+                    </div>
+                </section>
 
-       <form method="POST" action="index.php?acao=avaliarlivro">
+                <section class="secao-resenhas">
+                    <h2>Últimas resenhas</h2>
 
-    <input 
-        type="hidden" 
-        name="idLivro" 
-        value="<?= $livro['idlivro'] ?>"
-    >
+                    <?php foreach ($resenhas as $resenha): ?>
+                        <div class="cartao-resenha-livro">
+                            <div class="cartao-resenha-livro-cabecalho">
+                                <img
+                                    src="/imagens/<?= $resenha['fotoleitor'] ?>"
+                                    alt="Foto de <?= htmlspecialchars($resenha['nomeleitor']) ?>"
+                                    class="resenha-avatar">
+                                <a href="index.php?acao=visualizarperfil&id=<?= $resenha['idleitor'] ?>">
+                                    <?= htmlspecialchars($resenha['nomeleitor']) ?>
+                                </a>
+                            </div>
+                            <p class="resenha-texto"><?= htmlspecialchars($resenha['textoresenha']) ?></p>
+                            <small class="resenha-data"><?= $resenha['dataresenha'] ?></small>
+                        </div>
+                    <?php endforeach; ?>
+                </section>
+            </div>
 
-    <label>
-        <input type="radio" name="qtdestrelas" value="1" required>
-        ⭐
-    </label>
+        </section>
+    </main>
 
-    <label>
-        <input type="radio" name="qtdestrelas" value="2">
-        ⭐⭐
-    </label>
+    <?php require __DIR__ . "/partials/footer.php" ?>
 
-    <label>
-        <input type="radio" name="qtdestrelas" value="3">
-        ⭐⭐⭐
-    </label>
-
-    <label>
-        <input type="radio" name="qtdestrelas" value="4">
-        ⭐⭐⭐⭐
-    </label>
-
-    <label>
-        <input type="radio" name="qtdestrelas" value="5">
-        ⭐⭐⭐⭐⭐
-    </label>
-
-    <br><br>
-
-    <button type="submit">Avaliar</button>
-
-</form>
-
-
-
-
-
-
-        <form method="POST" action="index.php?acao=criarresenha">
-
-    <input 
-        type="hidden" 
-        name="idLivro" 
-        value="<?= $livro['idlivro'] ?>"
-    >
-
-    <textarea name="textoresenha"></textarea>
-
-    <button type="submit">
-        Criar resenha
-    </button>
-
-    </form>
-
-
-    <h1>Ultimas resenhas</h1>
-
-    <?php foreach ($resenhas as $resenha): ?>
-
-    <div>
-        <h3>
-            <a href="index.php?acao=visualizarperfil&id=<?= $resenha['idleitor'] ?>">
-                <?= htmlspecialchars($resenha['nomeleitor']) ?>
-            </a>
-        </h3>
-
-        <p>
-            <?= htmlspecialchars($resenha['textoresenha']) ?>
-        </p>
-
-        <small>
-            <?= $resenha['dataresenha'] ?>
-        </small>
-
-    </div>
-
-<?php endforeach; ?>
-
-
-
-
-
-
-
-
-
-
-    </p>
-        
-    <hr>
-
-
-
-
-
-
-
-
-
-
+    <script src="/public/js/livro.js"></script>
 </body>
+
 </html>

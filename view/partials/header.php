@@ -34,6 +34,12 @@
                         Meu perfil
                     </a>
                 </li>
+                <li>
+                    <a href="index.php?acao=minhalista"
+                        class="nav-local <?= $acaoAtual === 'minhalista' ? 'ativo' : '' ?>">
+                        Minha Lista
+                    </a>
+                </li>
             </ul>
         </nav>
         <div class="menu-perfil">
@@ -50,5 +56,5 @@
     </header>
     <script src="/public/js/header.js"></script>
 </body>
-    
-</html> 
+
+</html>

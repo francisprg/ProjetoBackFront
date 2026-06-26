@@ -8,12 +8,13 @@ require __DIR__ . '/controller/resenhaController.php';
 require __DIR__ . '/controller/leitorController.php';
 require __DIR__ . '/controller/livroController.php';
 require __DIR__ . '/controller/authController.php';
+ require __DIR__ . '/controller/listaLeituraController.php';
 
 $resenhaController = new ResenhaController();
 $leitorController = new leitorController();
 $livroController = new livroController();
 $authController = new authController();
-
+$listaLeituraController = new listaLeituraController();
 
 
 
@@ -128,6 +129,26 @@ switch ($acao) {
         $livroController->visualizarLivro($_GET['id']);
         break;
     
+
+  // REQUISICOES LISTA DE LEITURA
+ 
+    case 'adicionaralistadeleitura':
+        $listaLeituraController->adicionarLivro($_POST);
+        break;
+ 
+    case 'removerdalistadeleitura':
+        $listaLeituraController->removerLivro($_GET['id']);
+        break;
+ 
+    case 'atualizarstatusalista':
+        $listaLeituraController->atualizarStatus($_POST);
+        break;
+ 
+    case 'minhalista':
+        $listaLeituraController->minhaLista();
+        break;
+
+
 
     default:
         require __DIR__ . '../view/login.php';

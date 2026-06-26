@@ -42,47 +42,59 @@
                     </div>
                 </div>
 
+                <form method="POST" action="index.php?acao=adicionaralistadeleitura" class="lista-status-form">
+                    <input type="hidden" name="idLivro" value="<?= $livro['idlivro'] ?>">
+                    <select name="status" class="lista-status-select">
+                        <option value="quero_ler">Quero Ler</option>
+                        <option value="lendo">Lendo</option>
+                        <option value="lido">Lido</option>
+                    </select>
+                    <button type="submit" class="perfil-btn" style="margin-top:8px;">
+                        Adicionar à lista
+                    </button>
+                </form>
+
                 <section class="container-resenha-avaliacao">
-                        <div class="container-resenha">
-                            <?php if ($minhaResenha): ?>
-                                <h3>Sua resenha</h3>
-                                <p><?= htmlspecialchars($minhaResenha['textoresenha']) ?></p>
-                                <a href="index.php?acao=editarresenha&id=<?= $minhaResenha['idresenha'] ?>">
-                                    Editar resenha
-                                </a>
-                            <?php else: ?>
-                                <form method="POST" id="form-resenha" action="index.php?acao=criarresenha">
-                                    <input type="hidden" name="idLivro" value="<?= $livro['idlivro'] ?>">
-                                    <label for="textoresenha">Sua resenha</label>
-                                    <textarea id="textoresenha" name="textoresenha" placeholder="Escreva sua resenha..."></textarea>
-                                    <div id="erro-resenha" role="alert"></div>
-                                    <button type="submit">Criar resenha</button>
-                                </form>
-                            <?php endif; ?>
-                        </div>
+                    <div class="container-resenha">
+                        <?php if ($minhaResenha): ?>
+                            <h3>Sua resenha</h3>
+                            <p><?= htmlspecialchars($minhaResenha['textoresenha']) ?></p>
+                            <a href="index.php?acao=editarresenha&id=<?= $minhaResenha['idresenha'] ?>">
+                                Editar resenha
+                            </a>
+                        <?php else: ?>
+                            <form method="POST" id="form-resenha" action="index.php?acao=criarresenha">
+                                <input type="hidden" name="idLivro" value="<?= $livro['idlivro'] ?>">
+                                <label for="textoresenha">Sua resenha</label>
+                                <textarea id="textoresenha" name="textoresenha" placeholder="Escreva sua resenha..."></textarea>
+                                <div id="erro-resenha" role="alert"></div>
+                                <button type="submit">Criar resenha</button>
+                            </form>
+                        <?php endif; ?>
                     </div>
-                </section>
-
-                <section class="secao-resenhas">
-                    <h2>Últimas resenhas</h2>
-
-                    <?php foreach ($resenhas as $resenha): ?>
-                        <div class="cartao-resenha-livro">
-                            <div class="cartao-resenha-livro-cabecalho">
-                                <img
-                                    src="/imagens/<?= $resenha['fotoleitor'] ?>"
-                                    alt="Foto de <?= htmlspecialchars($resenha['nomeleitor']) ?>"
-                                    class="resenha-avatar">
-                                <a href="index.php?acao=visualizarperfil&id=<?= $resenha['idleitor'] ?>">
-                                    <?= htmlspecialchars($resenha['nomeleitor']) ?>
-                                </a>
-                            </div>
-                            <p class="resenha-texto"><?= htmlspecialchars($resenha['textoresenha']) ?></p>
-                            <small class="resenha-data"><?= $resenha['dataresenha'] ?></small>
-                        </div>
-                    <?php endforeach; ?>
-                </section>
             </div>
+        </section>
+
+        <section class="secao-resenhas">
+            <h2>Últimas resenhas</h2>
+
+            <?php foreach ($resenhas as $resenha): ?>
+                <div class="cartao-resenha-livro">
+                    <div class="cartao-resenha-livro-cabecalho">
+                        <img
+                            src="/imagens/<?= $resenha['fotoleitor'] ?>"
+                            alt="Foto de <?= htmlspecialchars($resenha['nomeleitor']) ?>"
+                            class="resenha-avatar">
+                        <a href="index.php?acao=visualizarperfil&id=<?= $resenha['idleitor'] ?>">
+                            <?= htmlspecialchars($resenha['nomeleitor']) ?>
+                        </a>
+                    </div>
+                    <p class="resenha-texto"><?= htmlspecialchars($resenha['textoresenha']) ?></p>
+                    <small class="resenha-data"><?= $resenha['dataresenha'] ?></small>
+                </div>
+            <?php endforeach; ?>
+        </section>
+        </div>
 
         </section>
     </main>

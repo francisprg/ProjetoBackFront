@@ -1366,7 +1366,69 @@ footer {
    
 }
 
+/* ===== LISTA DE LEITURA ===== */
 
+.lista-leitura-filtros {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.filtro-lista {
+    padding: 6px 16px;
+    border: 1.5px solid #1A365D;
+    border-radius: 20px;
+    background: transparent;
+    color: #1A365D;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: background .2s, color .2s;
+    font-family: "inter-medium";
+}
+
+.filtro-lista:hover,
+.filtro-lista.ativo {
+    background: #1A365D;
+    color: white;
+}
+
+.lista-livro-titulo {
+    color: #1A365D;
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: border-color .2s;
+}
+
+.lista-livro-titulo:hover {
+    border-bottom-color: #1A365D;
+}
+
+.lista-livro-autor {
+    font-size: 0.88rem;
+    color: #5a6a7e;
+    font-style: italic;
+}
+
+.lista-status-form {
+    margin-top: 4px;
+}
+
+.lista-status-select {
+    padding: 5px 10px;
+    border: 1.5px solid #e0e0e0;
+    border-radius: 4px;
+    font-size: 0.82rem;
+    color: #1A365D;
+    background: #f8f9fa;
+    cursor: pointer;
+    transition: border-color .2s;
+    font-family: "inter-medium";
+}
+
+.lista-status-select:focus {
+    outline: none;
+    border-color: #1A365D;
+}
 
 
 

@@ -36,10 +36,6 @@ O sistema foi desenvolvido utilizando a arquitetura MVC (Model-View-Controller),
 
 * PostgreSQL
 
-## Gerenciamento de Dependências
-
-* Composer
-
 # Instruções de Execução
 
 ## Pré-requisitos

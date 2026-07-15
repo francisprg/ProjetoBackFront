@@ -51,28 +51,35 @@ class resenhaDAO
     }
 
 
-    public function exibirResenha(int $id)
-    {
-        $sql = 'SELECT
+ public function exibirResenha(int $id)
+{
+    $sql = 'SELECT
                 leitor.fotoleitor,
                 leitor.idleitor,
                 leitor.nomeleitor,
+                r.idresenha,
                 r.textoresenha,
-                r.dataresenha
+                r.dataresenha,
+                COUNT(c.idcomentario) AS total_comentarios  
             FROM resenha r
             INNER JOIN leitor
                 ON r.idleitor = leitor.idleitor
-            WHERE r.idlivro = :id';
+            LEFT JOIN comentario c
+                ON c.idresenha = r.idresenha
+            WHERE r.idlivro = :id
+            GROUP BY
+                leitor.fotoleitor,
+                leitor.idleitor,
+                leitor.nomeleitor,
+                r.idresenha,
+                r.textoresenha,
+                r.dataresenha
+            ORDER BY r.dataresenha DESC';
 
-        $stmt = $this->conexao->prepare($sql);
-
-        $stmt->execute([
-            ':id' => $id
-        ]);
-
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
-    }
-
+    $stmt = $this->conexao->prepare($sql);
+    $stmt->execute([':id' => $id]);
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
 
 
     public function deletarResenha($id)
@@ -88,6 +95,8 @@ class resenhaDAO
     }
 
 
+    // Atualiza somente o texto de uma resenha existente, identificada pelo idresenha.
+    // Usada tanto pela rota antiga (form) quanto pelo modal (via ResenhaController::editarResenhaJson).
     public function atualizarResenha(array $dados)
     {
 
@@ -102,6 +111,7 @@ class resenhaDAO
             ':idresenha' => $dados['idresenha']
         ]);
     }
+
 
 
     public function buscarPorId($id)
@@ -119,19 +129,29 @@ class resenhaDAO
     }
 
 
-    public function exibirResenhaLeitor(int $idLeitor)
+public function exibirResenhaLeitor(int $idLeitor)
 {
+    
     $sql = 'SELECT
-                r.idresenha,
-                r.textoresenha,
-                r.dataresenha,
-                l.titulo,
-                l.capalivro
-            FROM resenha r
-            INNER JOIN livro l
-                ON r.idlivro = l.idlivro
-            WHERE r.idleitor = :idleitor
-            ORDER BY r.dataresenha DESC';
+    r.idresenha,
+    r.textoresenha,
+    r.dataresenha,
+    l.idlivro,
+    l.titulo,
+    l.capalivro,
+    av.idavaliacao,
+    av.qntestrelas,
+    COUNT(c.idcomentario) AS total_comentarios
+FROM resenha r
+INNER JOIN livro l ON r.idlivro = l.idlivro
+LEFT JOIN comentario c ON c.idresenha = r.idresenha
+LEFT JOIN avaliacao av ON av.idlivro = r.idlivro AND av.idleitor = r.idleitor
+WHERE r.idleitor = :idleitor
+GROUP BY
+    r.idresenha, r.textoresenha, r.dataresenha,
+    l.idlivro, l.titulo, l.capalivro,
+    av.idavaliacao, av.qntestrelas
+ORDER BY r.dataresenha DESC';
 
     $stmt = $this->conexao->prepare($sql);
 
@@ -143,7 +163,23 @@ class resenhaDAO
 }
 
 
+    public function buscarLivroFiltrado(string $termo, string $filtro): array
+    {
+        $coluna = match ($filtro) {
+            'editora' => 'e.nomeeditora',
+            default   => 'a.nomeautor',
+        };
 
+        $sql = "SELECT l.idlivro, l.titulo, l.capalivro
+            FROM livro l
+            JOIN autor a ON l.idautor = a.idautor
+            JOIN editora e ON l.ideditora = e.ideditora
+            WHERE $coluna LIKE :termo";
+
+        $stmt = $this->conexao->prepare($sql);
+        $stmt->execute([':termo' => '%' . $termo . '%']);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 
 
 

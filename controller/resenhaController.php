@@ -1,7 +1,7 @@
 <?php
 
-require __DIR__ . '/../DAO/resenhaDAO.php';
-require __DIR__ . '/../model/resenhaModel.php';
+require_once __DIR__ . '/../DAO/resenhaDAO.php';
+require_once __DIR__ . '/../model/resenhaModel.php';
 require_once __DIR__ . '/../model/leitorModel.php';
 require_once __DIR__ . '/../model/livromodel.php';
 require_once __DIR__ . '/../model/editoraModel.php';
@@ -26,21 +26,49 @@ class ResenhaController {
     }
 
 
-    public function editarresenha (int $id) {
+       public function editarResenhaJson(array $dados): array
+    {
+        //verifica se os campos estao preenchidos
+        if (empty($dados['idResenha']) || empty(trim($dados['textoResenha'] ?? ''))) {
+            return ['sucesso' => false, 'erro' => 'Dados inválidos.'];
+        }
 
+        $idResenha = (int) $dados['idResenha'];
+        $texto     = trim($dados['textoResenha']);
 
-    $resenha = $this->dao->buscarPorId($id);
+        //verifica se a resenha tem menos de 10 caracteres
+        if (mb_strlen($texto) < 10) {
+            return ['sucesso' => false, 'erro' => 'A resenha deve ter pelo menos 10 caracteres.'];
+        }
 
+        // Busca a resenha no banco dea dados
+        $resenhaAtual = $this->dao->buscarPorId($idResenha);
 
-    require __DIR__ . '/../view/editarresenha.php';
+        if (!$resenhaAtual) {
+            return ['sucesso' => false, 'erro' => 'Resenha não encontrada.'];
+        }
 
+        // 3) Só o autor da resenha (leitor logado) pode editá-la.
+        $idLeitorLogado = $_SESSION['leitor']['idleitor'] ?? null;
+
+        //Verifica se o autor que quer editar a resenha é o que esta logado
+        if ($idLeitorLogado === null || (int) $resenhaAtual['idleitor'] !== (int) $idLeitorLogado) {
+            return ['sucesso' => false, 'erro' => 'Você não tem permissão para editar esta resenha.'];
+        }
+        
+        // Faz a atualizacao da resenha
+        $this->dao->atualizarResenha([
+            'idresenha'    => $idResenha,
+            'textoresenha' => $texto,
+        ]);
+
+        return ['sucesso' => true];
     }
 
 
     public function atualizarresenha(array $dados) {
     
-    $this->dao->atualizarResenha($dados);
-
+    return  $this->dao->atualizarResenha($dados);
 
     }
 
@@ -85,7 +113,12 @@ class ResenhaController {
         $editora
     );
 
-    $resenha = new Resenha(null, $dados['textoresenha'], date('Y-m-d'), $leitor, $livroObj);
+    $resenha = new Resenha(
+        null, 
+        $dados['textoresenha'],
+         date('Y-m-d'), 
+         $leitor, 
+         $livroObj);
 
 
     $livro    = $dadosLivro;

@@ -4,19 +4,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login — LiAqui</title>
+    <title>Login</title>
     <link rel="stylesheet" href="/public/css/style.css">
 </head>
 
 <body>
     <main class="login-cadastro">
-        <div class="auth-card">
-            <div class="auth-side">
-                <div class="auth-side-divider"></div>
-                <h2>Bem-vindo ao LiAqui</h2>
-                <p>Registre suas leituras, escreva resenhas e descubra novos livros.</p>
-            </div>
+        <div class="login-intro">
+            <h2>Bem-vindo ao LiAqui</h2>
+            <p>Registre suas leituras, escreva resenhas e descubra novos livros.</p>
+        </div>
 
+        <div class="auth-card">
             <div class="auth-main">
 
                 <div class="auth-tabs">
@@ -42,23 +41,22 @@
                             <div class="campo">
                                 <label for="email-input">Email</label>
                                 <input id="email-input" type="email" name="email" placeholder="seu@email.com" autocomplete="email">
-                                <span class="erro-msg" id="erro-email"></span>
+                                <span class="erro-msg" id="erro-email" role="alert" aria-live="polite"></span>
                             </div>
 
                             <div class="campo">
                                 <label for="senha-input">Senha</label>
                                 <input id="senha-input" type="password" name="senha" placeholder="••••••••" autocomplete="current-password">
-                                <span class="erro-msg" id="erro-senha"></span>
+                                <span class="erro-msg" id="erro-senha" role="alert" aria-live="polite"></span>
                             </div>
 
                             <button class="btn-primario" type="submit">Entrar</button>
 
                         </form>
 
-                        <p class="auth-footer">
-                            Ainda não tem conta? <a id="link-para-cadastro">Cadastre-se</a>
+                        <p class="auth-troca">
+                            Ainda não tem conta? <button type="button" id="link-para-cadastro" class="auth-troca-link">Cadastre-se</button>
                         </p>
-
                     </div>
 
                     <!-- Cadastro -->
@@ -67,7 +65,7 @@
                         <form action="../index.php?acao=cadastrar" method="POST" enctype="multipart/form-data" novalidate>
 
                             <div class="container-foto">
-                                <img src="/imagens/default.webp" alt="" id="imagem-perfil">
+                                <img src="/imagens/default.webp" alt="Pré-visualização da foto de perfil" id="imagem-perfil">
                                 <input id="input-arquivo" name="fotoLeitor" type="file" accept=".jpeg, .png, .jpg, .webp">
                                 <label for="input-arquivo" class="btn-primario">Selecionar Imagem</label>
                             </div>
@@ -76,12 +74,12 @@
                                 <div class="campo">
                                     <label for="nome-input">Nome</label>
                                     <input id="nome-input" type="text" name="nomeLeitor" placeholder="Nome" required autocomplete="given-name">
-                                    <span class="erro-msg" id="erro-nome"></span>
+                                    <span class="erro-msg" id="erro-nome" role="alert" aria-live="polite"></span>
                                 </div>
                                 <div class="campo">
                                     <label for="sobrenome-input">Sobrenome</label>
                                     <input id="sobrenome-input" type="text" name="sobrenomeLeitor" placeholder="Sobrenome" required autocomplete="family-name">
-                                    <span class="erro-msg" id="erro-sobrenome"></span>
+                                    <span class="erro-msg" id="erro-sobrenome" role="alert" aria-live="polite"></span>
                                 </div>
                             </div>
 
@@ -91,23 +89,24 @@
 
                                 <label for="email-cad-input">Email</label>
                                 <input id="email-cad-input" type="email" name="emailLeitor" placeholder="seu@email.com" required autocomplete="email">
-                                <span class="erro-msg" id="erro-email-cad"></span>
+                                <span class="erro-msg" id="erro-email-cad" role="alert" aria-live="polite"></span>
 
                                 <label for="senha-cad-input">Senha</label>
                                 <input id="senha-cad-input" type="password" name="senhaLeitor" placeholder="Mínimo 8 caracteres" required autocomplete="new-password">
-                                <span class="erro-msg" id="erro-senha-cad"></span>
+                                <span class="erro-msg" id="erro-senha-cad" role="alert" aria-live="polite"></span>
 
                                 <label for="nascimento-input">Data de nascimento</label>
                                 <input id="nascimento-input" type="date" name="datanascLeitor">
-                                <span class="erro-msg" id="erro-nascimento"></span>
+                                <span class="erro-msg" id="erro-nascimento" role="alert" aria-live="polite"></span>
                             </div>
 
                             <button class="btn-primario" type="submit">Criar conta</button>
-
+                            
                         </form>
 
-                        <p class="auth-footer">
-                            Já tem conta? <a id="link-para-login">Faça login</a>
+
+                        <p class="auth-troca">
+                            Ja possui conta? <button type="button" id="link-para-login" class="auth-troca-link">Faça Login</button>
                         </p>
                     </div>
                 </div>
@@ -115,11 +114,8 @@
         </div>
     </main>
 
-    <script src="/public/js/main.js"></script>
+    <script src="/public/js/auth.js"></script>
 
 </body>
 
 </html>
-
-
- <a href="index.php?acao=deletarresenha&id=<?= (int)($resenha['idresenha'] ?? 0) ?>" class="acao-deletar"><button>Deletar Resenha</button></a>

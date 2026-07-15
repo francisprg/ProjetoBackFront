@@ -1,11 +1,12 @@
-<?php 
+<?php
 
-    require_once __DIR__ . '/../config/Database.php';
-    require_once __DIR__ . '/../model/livroModel.php';
+require_once __DIR__ . '/../config/Database.php';
+require_once __DIR__ . '/../model/livroModel.php';
 
-    Class leitorDAO {
+class leitorDAO
+{
 
-  
+
 
     private PDO $conexao;
 
@@ -18,37 +19,38 @@
 
 
 
-    public function listarleitores () {
+    public function listarleitores()
+    {
 
-    $sql = 'SELECT * FROM leitor ORDER BY idleitor DESC';
+        $sql = 'SELECT * FROM leitor ORDER BY idleitor DESC';
 
-    $stmt = $this->conexao->prepare($sql);
-    $stmt->execute();
+        $stmt = $this->conexao->prepare($sql);
+        $stmt->execute();
 
-    return $stmt->fetchAll(PDO::FETCH_ASSOC);
-
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
 
 
 
 
-    public function deletarLeitor ($id) {
+    public function deletarLeitor($id)
+    {
 
-    $sql = "DELETE FROM Leitor WHERE idLeitor = :id";
+        $sql = "DELETE FROM Leitor WHERE idLeitor = :id";
 
-    $stmt = $this->conexao->prepare($sql);
+        $stmt = $this->conexao->prepare($sql);
 
-    $stmt->execute([':id' => $id]);
-
+        $stmt->execute([':id' => $id]);
     }
 
 
 
 
-    public function cadastrarLeitor (LeitorModel $leitor) {
+    public function cadastrarLeitor(LeitorModel $leitor)
+    {
 
-    $sql = "INSERT INTO Leitor (
+        $sql = "INSERT INTO Leitor (
     nomeLeitor,
     sobrenomeLeitor,
     apelidoLeitor,
@@ -66,76 +68,93 @@
     :fotoLeitor
 )";
 
-    $stmt = $this->conexao->prepare($sql);
+        $stmt = $this->conexao->prepare($sql);
 
-    $stmt->execute([
-    ':nomeLeitor' => $leitor->getNomeLeitor(),
-    ':sobrenomeLeitor' => $leitor->getSobrenomeLeitor(),
-    ':apelidoLeitor' => $leitor->getApelidoLeitor(),
-    ':emailLeitor' => $leitor->getEmailLeitor(),
-    ':senhaLeitor' => password_hash(
-        $leitor->getSenhaLeitor(),
-        PASSWORD_DEFAULT
-    ),
-    ':datanascLeitor' => $leitor->getDatanascLeitor(),
-    ':fotoLeitor' => $leitor->getFotoLeitor()
-]);
+        $stmt->execute([
+            ':nomeLeitor' => $leitor->getNomeLeitor(),
+            ':sobrenomeLeitor' => $leitor->getSobrenomeLeitor(),
+            ':apelidoLeitor' => $leitor->getApelidoLeitor(),
+            ':emailLeitor' => $leitor->getEmailLeitor(),
+            ':senhaLeitor' => password_hash(
+                $leitor->getSenhaLeitor(),
+                PASSWORD_DEFAULT
+            ),
+            ':datanascLeitor' => $leitor->getDatanascLeitor(),
+            ':fotoLeitor' => $leitor->getFotoLeitor()
+        ]);
     }
 
 
-    public function buscarPorId ($id) {
+    public function buscarPorId($id)
+    {
 
 
-    $sql = "SELECT * FROM Leitor WHERE idLeitor = :id";
+        $sql = "SELECT * FROM Leitor WHERE idLeitor = :id";
 
-    $stmt = $this->conexao->prepare($sql);
+        $stmt = $this->conexao->prepare($sql);
 
-    $stmt->execute([':id' => $id]);
+        $stmt->execute([':id' => $id]);
 
-    return $stmt->fetch(PDO::FETCH_ASSOC);
-
+        return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
 
 
-    public function atualizarLeitor (array $dados) {
+    public function atualizarLeitor(array $dados) {
 
-    $sql = "UPDATE leitor SET
-        nomeleitor = :nomeLeitor,
-        sobrenomeleitor = :sobrenomeLeitor,
-        apelidoleitor = :apelidoLeitor,
-        emailleitor = :emailLeitor,
-        senhaleitor = :senhaLeitor,
-        datanascleitor = :datanascLeitor,
-        bioleitor = :bioLeitor,
-        fotoleitor = :fotoLeitor
-    WHERE idleitor = :idLeitor";
+    $novaSenha = $dados['senhaLeitor'] ?? '';
 
-    $stmt = $this->conexao->prepare($sql);
+    if ($novaSenha !== '') {
 
-    $stmt->execute([
-        ':idLeitor' => $dados['idLeitor'],
-        ':nomeLeitor' => $dados['nomeLeitor'],
-        ':sobrenomeLeitor' => $dados['sobrenomeLeitor'],
-        ':apelidoLeitor' => $dados['apelidoLeitor'],
-        ':emailLeitor' => $dados['emailLeitor'],
-        ':senhaLeitor' => password_hash(
-            $dados['senhaLeitor'],
-            PASSWORD_DEFAULT
-        ),
-        ':datanascLeitor' => $dados['datanascLeitor'],
-        ':bioLeitor' => $dados['bioLeitor'],
-        ':fotoLeitor' => $dados['fotoLeitor']
-    ]);
+        $sql = "UPDATE leitor SET
+            nomeleitor      = :nomeLeitor,
+            sobrenomeleitor = :sobrenomeLeitor,
+            apelidoleitor   = :apelidoLeitor,
+            emailleitor     = :emailLeitor,
+            senhaleitor     = :senhaLeitor,
+            datanascleitor  = :datanascLeitor,
+            bioleitor       = :bioLeitor,
+            fotoleitor      = :fotoLeitor
+        WHERE idleitor = :idLeitor";
 
+        $stmt = $this->conexao->prepare($sql);
+
+        $stmt->execute([
+            ':idLeitor'       => $dados['idLeitor'],
+            ':nomeLeitor'     => $dados['nomeLeitor'],
+            ':sobrenomeLeitor' => $dados['sobrenomeLeitor'],
+            ':apelidoLeitor'  => $dados['apelidoLeitor'],
+            ':emailLeitor'    => $dados['emailLeitor'],
+            ':senhaLeitor'    => password_hash($novaSenha, PASSWORD_DEFAULT),
+            ':datanascLeitor' => $dados['datanascLeitor'],
+            ':bioLeitor'      => $dados['bioLeitor'],
+            ':fotoLeitor'     => $dados['fotoLeitor']
+        ]);
+
+    } else {
+        // Campo vazio — atualiza tudo MENOS a senha
+        $sql = "UPDATE leitor SET
+            nomeleitor      = :nomeLeitor,
+            sobrenomeleitor = :sobrenomeLeitor,
+            apelidoleitor   = :apelidoLeitor,
+            emailleitor     = :emailLeitor,
+            datanascleitor  = :datanascLeitor,
+            bioleitor       = :bioLeitor,
+            fotoleitor      = :fotoLeitor
+        WHERE idleitor = :idLeitor";
+
+        $stmt = $this->conexao->prepare($sql);
+
+        $stmt->execute([
+            ':idLeitor'        => $dados['idLeitor'],
+            ':nomeLeitor'      => $dados['nomeLeitor'],
+            ':sobrenomeLeitor' => $dados['sobrenomeLeitor'],
+            ':apelidoLeitor'   => $dados['apelidoLeitor'],
+            ':emailLeitor'     => $dados['emailLeitor'],
+            ':datanascLeitor'  => $dados['datanascLeitor'],
+            ':bioLeitor'       => $dados['bioLeitor'],
+            ':fotoLeitor'      => $dados['fotoLeitor']
+        ]);
+    }
 }
-
-   
-
-
-    }
-
-
-
-
-?>
+}

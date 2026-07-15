@@ -58,10 +58,12 @@
                         <div class="editar-perfil-campo">
                             <label class="editar-perfil-label" for="nomeLeitor">Nome</label>
                             <input id="nomeLeitor" type="text" name="nomeLeitor" value="<?= $dadosLeitor['nomeleitor'] ?>">
+                            <span class="erro-msg" id="erro-nomeLeitor" role="alert" aria-live="polite"></span>
                         </div>
                         <div class="editar-perfil-campo">
                             <label class="editar-perfil-label" for="sobrenomeLeitor">Sobrenome</label>
                             <input id="sobrenomeLeitor" type="text" name="sobrenomeLeitor" value="<?= $dadosLeitor['sobrenomeleitor'] ?>">
+                            <span class="erro-msg" id="erro-sobrenomeLeitor" role="alert" aria-live="polite"></span>
                         </div>
                     </div>
 
@@ -73,17 +75,21 @@
                         <div class="editar-perfil-campo">
                             <label class="editar-perfil-label" for="datanascLeitor">Data de nascimento</label>
                             <input id="datanascLeitor" type="date" name="datanascLeitor" value="<?= $dadosLeitor['datanascleitor'] ?>">
+                            <span class="erro-msg" id="erro-datanascLeitor" role="alert" aria-live="polite"></span>
                         </div>
                     </div>
 
                     <div class="editar-perfil-campo">
                         <label class="editar-perfil-label" for="emailLeitor">Email</label>
                         <input id="emailLeitor" type="email" name="emailLeitor" value="<?= $dadosLeitor['emailleitor'] ?>">
+                        <span class="erro-msg" id="erro-emailLeitor" role="alert" aria-live="polite"></span>
                     </div>
+                    
 
                     <div class="editar-perfil-campo">
-                        <label class="editar-perfil-label" for="senhaleitor">Email</label>
-                        <input id="senhaleitor" type="password" name="senhaleitor" value="<?= $dadosLeitor['senhaleitor'] ?>">
+                        <label class="editar-perfil-label" for="senhaleitor">Senha</label>
+                        <input id="senhaleitor" type="password" name="senhaleitor">
+                        <span class="erro-msg" id="erro-senhaleitor" role="alert" aria-live="polite"></span>
                     </div>
 
 
@@ -107,6 +113,7 @@
 
 
 
+    <script src="/public/js/header.js"></script>
     <script src="/public/js/editarperfil.js"></script>
 </body>
 

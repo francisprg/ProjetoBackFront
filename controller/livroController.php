@@ -1,5 +1,7 @@
 <?php
 
+
+
 require_once __DIR__ . '/../DAO/livroDAO.php';
 require_once __DIR__ . '/../DAO/autorDAO.php';
 require_once __DIR__ . '/../DAO/editoraDAO.php';
@@ -31,7 +33,6 @@ class livroController
     public function  visualizarCadLivro()
     {
 
-
         $autores = $this->daoautor->listarAutores();
         $editoras = $this->daoeditora->listarEditoras();
 
@@ -41,11 +42,8 @@ class livroController
 
     public function listarlivrosJson()
     {
-        $livros = $this->dao->listarlivros();
 
-        header('Content-Type: application/json');
-
-        echo json_encode($livros);
+        return $this->dao->listarlivros();
     }
 
 
@@ -166,13 +164,13 @@ class livroController
     }
 
 
-
     public function visualizarLivro(int $id)
     {
         $livro    = $this->dao->buscarLivroid($id);
         $resenhas = $this->daoresenha->exibirResenha($id);
-
+        
         $minhaResenha = null;
+       
         if (isset($_SESSION['leitor'])) {
             foreach ($resenhas as $r) {
                 if ($r['idleitor'] == $_SESSION['leitor']['idleitor']) {
@@ -181,6 +179,7 @@ class livroController
                 }
             }
         }
+
         require __DIR__ . '/../view/visualizarlivro.php';
     }
 
@@ -194,5 +193,19 @@ class livroController
 
 
         require __DIR__ . '/../view/visualizarBusca.php';
+    }
+
+
+    public function buscarLivroTermojson(string $termo)
+    {
+
+        return $livros = $this->dao->buscarLivro($termo);
+    }
+
+
+    // livroController.php
+    public function buscarLivroFiltradoJson(string $termo, string $filtro): array
+    {
+        return $this->dao->buscarLivroFiltrado($termo, $filtro);
     }
 }

@@ -52,29 +52,23 @@ CREATE TABLE Resenha (
         REFERENCES Livro(idLivro)
 );
 
-CREATE TABLE Avaliacao (
-    idAvaliacao SERIAL PRIMARY KEY,
-    qtdEstrelas INT NOT NULL,
-    idLivro INT NOT NULL,
+CREATE TABLE Comentario (
+    idComentario SERIAL PRIMARY KEY,
+
     idLeitor INT NOT NULL,
+    idResenha INT NOT NULL,
 
-    FOREIGN KEY (idLivro)
-        REFERENCES Livro(idLivro),
+    comentario TEXT NOT NULL,
+    dataComentario TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 
-    FOREIGN KEY (idLeitor)
+    CONSTRAINT fk_comentario_leitor
+        FOREIGN KEY (idLeitor)
         REFERENCES Leitor(idLeitor)
+        ON DELETE CASCADE,
+
+    CONSTRAINT fk_comentario_resenha
+        FOREIGN KEY (idResenha)
+        REFERENCES Resenha(idResenha)
+        ON DELETE CASCADE
 );
 
-CREATE TABLE ListaLeitura (
-    idLista SERIAL PRIMARY KEY,
-    idLeitor INT NOT NULL,
-    idLivro INT NOT NULL,
-    status VARCHAR(30) NOT NULL,
-    dataAdicionado DATE NOT NULL,
-
-    FOREIGN KEY (idLeitor)
-        REFERENCES Leitor(idLeitor),
-
-    FOREIGN KEY (idLivro)
-        REFERENCES Livro(idLivro)
-);

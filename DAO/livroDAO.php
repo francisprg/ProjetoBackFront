@@ -156,15 +156,56 @@ WHERE l.titulo ILIKE :termo
 
     
 
-    public function listarLivros()
-    {
-    $sql = "SELECT * FROM Livro";
+  public function listarLivros()
+{
+    $sql = "SELECT 
+                l.idlivro,
+                l.titulo,
+                l.capalivro,
+                l.isbn,
+                l.numeropaginas,
+                l.ano,
+                l.idioma,
+                a.nomeautor,
+                e.nomeeditora
+            FROM livro l
+            JOIN autor a   ON a.idautor   = l.idautor
+            JOIN editora e ON e.ideditora = l.ideditora
+            ORDER BY l.titulo ASC";
 
     $stmt = $this->conexao->prepare($sql);
     $stmt->execute();
-
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
+
+public function buscarLivroFiltrado(string $termo, string $filtro): array
+    {
+        $coluna = match ($filtro) {
+            'editora' => 'e.nomeeditora',
+            'autor' => 'a.nomeautor',
+            default  => 'l.titulo',
+        };
+
+        $sql = "SELECT l.idlivro, l.titulo, l.capalivro
+            FROM livro l
+            JOIN autor a ON l.idautor = a.idautor
+            JOIN editora e ON l.ideditora = e.ideditora
+            WHERE $coluna LIKE :termo";
+
+        $stmt = $this->conexao->prepare($sql);
+        $stmt->execute([':termo' => '%' . $termo . '%']);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
+
+
+
+
+
+
+
+
 
 
 }

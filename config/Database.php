@@ -8,7 +8,7 @@ class Database {
         $porta = '5432';
         $banco = 'projbackfront';
         $usuario = 'postgres';
-        $senha = '02121940';
+        $senha = 'postgres';
 
         $dsn = "pgsql:host={$host};port={$porta};dbname={$banco}";
 

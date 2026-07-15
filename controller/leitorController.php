@@ -26,31 +26,24 @@
 
 
 
-    public function processarUpload () {
+ public function processarUpload(): string
+{
+    $arquivo = $_FILES['fotoLeitor'] ?? null;
 
-   
-     $nome_arquivo = $_FILES['fotoLeitor']['name'];
-    $arquivo_temporario = $_FILES['fotoLeitor']['tmp_name'];
-
-
-    $caminho = __DIR__ . "/../imagens/" . $nome_arquivo;
-
-    if (move_uploaded_file($arquivo_temporario, $caminho)) {
-
-        echo "Upload concluído com sucesso";
-
-        return $nome_arquivo;
-    } 
-    else {
-
-        echo "Arquivo não pode ser copiado para o servidor.";
-
-        return false;
+    if (empty($arquivo['name']) || $arquivo['error'] !== UPLOAD_ERR_OK) {
+        return 'default.webp';
     }
 
+    $extensao   = pathinfo($arquivo['name'], PATHINFO_EXTENSION);
+    $nomeUnico  = uniqid() . '.' . $extensao;
+    $destino    = __DIR__ . '/../imagens/' . $nomeUnico;
+
+    if (move_uploaded_file($arquivo['tmp_name'], $destino)) {
+        return $nomeUnico;
     }
 
-
+    return 'default.webp';
+}
 
 
    public function cadastrarLeitor(array $dados) {
@@ -98,7 +91,6 @@
 
     }
 
-
  
 
     public function atualizarLeitor(array $dados) {
@@ -113,6 +105,7 @@
     }
     
     $dados['fotoLeitor'] = $imagem;
+    $novaSenha = $dados['senhaLeitor'] ?? '';
 
     $this->dao->atualizarLeitor($dados);
 

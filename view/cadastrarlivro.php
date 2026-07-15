@@ -1,125 +1,109 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cadastrar Livro</title>
+    <link rel="stylesheet" href="/public/css/style.css">
 </head>
+
 <body>
-    
 
-<?php
+    <?php
     if (!isset($_SESSION['leitor'])) {
-    header('Location: login.php');
-    exit;
+        header('Location: login.php');
+        exit;
     }
-?>
-    <h1>Cadastrar Livro</h1>
+    ?>
 
-    <form 
-        action="../index.php?acao=cadastrarLivro" 
-        method="POST"
-        enctype="multipart/form-data"
-    >
+    <?php require __DIR__ . "/partials/header.php" ?>
 
-        <label>Título do Livro</label>
-        <input 
-            type="text" 
-            name="titulo"
-            required
-        >
+    <main class="editar-perfil">
+        <div class="editar-perfil-container">
 
-        <br><br>
+            <h1 class="editar-perfil-titulo">Cadastrar Livro</h1>
 
-        <label>ISBN</label>
-        <input 
-            type="text" 
-            name="isbn"
-            required
-        >
+            <form
+                class="editar-perfil-form"
+                action="../index.php?acao=cadastrarLivro"
+                method="POST"
+                enctype="multipart/form-data"
+            >
 
-        <br><br>
+                <div class="editar-perfil-campo">
+                    <label class="editar-perfil-label" for="titulo">Título do Livro</label>
+                    <input id="titulo" type="text" name="titulo" required>
+                </div>
 
-        <label>Número de Páginas</label>
-        <input 
-            type="number" 
-            name="numeroPaginas"
-            required
-        >
+                <div class="editar-perfil-linha-dupla">
+                    <div class="editar-perfil-campo">
+                        <label class="editar-perfil-label" for="isbn">ISBN</label>
+                        <input id="isbn" type="text" name="isbn" required>
+                    </div>
+                    <div class="editar-perfil-campo">
+                        <label class="editar-perfil-label" for="ano">Ano</label>
+                        <input id="ano" type="number" name="ano" required>
+                    </div>
+                </div>
 
-        <br><br>
+                <div class="editar-perfil-linha-dupla">
+                    <div class="editar-perfil-campo">
+                        <label class="editar-perfil-label" for="numeroPaginas">Número de Páginas</label>
+                        <input id="numeroPaginas" type="number" name="numeroPaginas" required>
+                    </div>
+                    <div class="editar-perfil-campo">
+                        <label class="editar-perfil-label" for="idioma">Idioma</label>
+                        <input id="idioma" type="text" name="idioma" required>
+                    </div>
+                </div>
 
-        <label>Ano</label>
-        <input 
-            type="number" 
-            name="ano"
-            required
-        >
+                <div class="editar-perfil-divider"></div>
 
-        <br><br>
+                <div class="editar-perfil-campo">
+                    <label class="editar-perfil-label" for="idAutor">Autor</label>
+                    <select id="idAutor" name="idAutor" required>
+                        <option value="">Selecione um autor</option>
+                        <?php foreach ($autores as $autor): ?>
+                            <option value="<?= $autor['idautor'] ?>">
+                                <?= $autor['nomeautor'] ?>
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
 
-        <label>Idioma</label>
-        <input 
-            type="text" 
-            name="idioma"
-            required
-        >
+                <div class="editar-perfil-campo">
+                    <label class="editar-perfil-label" for="idEditora">Editora</label>
+                    <select id="idEditora" name="idEditora" required>
+                        <option value="">Selecione uma editora</option>
+                        <?php foreach ($editoras as $editora): ?>
+                            <option value="<?= $editora['ideditora'] ?>">
+                                <?= $editora['nomeeditora'] ?>
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
 
-        <br><br>
+                <div class="editar-perfil-divider"></div>
 
-        <label>Foto do Livro</label>
-        <input 
-            type="file" 
-            name="fotoLivro"
-        >
+                <div class="editar-perfil-campo">
+                    <label class="editar-perfil-label" for="fotoLivro">Capa do Livro</label>
+                    <input id="fotoLivro" type="file" name="fotoLivro" accept=".jpeg, .png, .jpg, .webp">
+                    <small>Formatos aceitos: JPG, PNG ou WEBP.</small>
+                </div>
 
-        <br><br>
+                <div class="editar-perfil-acoes">
+                    <a class="editar-perfil-cancelar" href="../index.php?acao=home">Cancelar</a>
+                    <button class="editar-perfil-salvar" type="submit">Cadastrar Livro</button>
+                </div>
 
-        <label>Autor</label>
-        <select name="idAutor" required>
+            </form>
+        </div>
+    </main>
 
-            <option value="">
-                Selecione um autor
-            </option>
+    <?php require __DIR__ . "/partials/footer.php" ?>
 
-            <?php foreach($autores as $autor): ?>
-
-                <option value="<?= $autor['idautor'] ?>">
-                    <?= $autor['nomeautor'] ?>
-                </option>
-
-            <?php endforeach; ?>
-
-        </select>
-
-        <br><br>
-        <img src="im" alt="">
-
-        <label>Editora</label>
-        <select name="idEditora" required>
-
-            <option value="">
-                Selecione uma editora
-            </option>
-
-            <?php foreach($editoras as $editora): ?>
-
-                <option value="<?= $editora['ideditora'] ?>">
-                    <?= $editora['nomeeditora'] ?>
-                </option>
-
-            <?php endforeach; ?>
-
-        </select>
-
-        <br><br>
-
-        <button type="submit">
-            Cadastrar Livro
-        </button>
-                <a href="../index.php?acao=listarlivros">
-    Listar Livros
-</a>
-    </form>
-
+    <script src="/public/js/header.js"></script>
 </body>
+
 </html>

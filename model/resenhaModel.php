@@ -9,7 +9,7 @@ class Resenha
     private ?int $idResenha;
     private string $textoResenha;
     private string $dataResenha;
-
+    
     private LeitorModel $leitor;
     private Livro $livro;
 

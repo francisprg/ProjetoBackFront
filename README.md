@@ -44,20 +44,14 @@ O sistema foi desenvolvido utilizando a arquitetura MVC (Model-View-Controller),
 * PHP 8 ou superior
 * PostgreSQL
 * Servidor local (Apache, XAMPP ou similar)
-* Composer
+
 
 ## Passos para execução
 
 1. Clone ou extraia o projeto para o diretório do servidor web.
 2. Crie o banco de dados PostgreSQL.
 3. Execute o script SQL de criação das tabelas.
-4. Configure as credenciais de conexão com o banco de dados nos arquivos de configuração do projeto.
-5. Execute o comando abaixo para instalar as dependências:
-
-```bash
-composer install
-```
-
+4. Configure as credenciais de conexão com o banco de dados nos arquivos de configuração do projeto.:
 6. Inicie o servidor local.
 7. Acesse a aplicação pelo navegador utilizando o endereço configurado no servidor.
 
@@ -98,12 +92,7 @@ TRABALHOBACKFRONT/
 │   ├── css/
 │   └── js/
 │
-├── config/
-│
-├── vendor/
-│
 ├── index.php
-└── composer.json
 ```
 
 # Uso de API e JSON
@@ -128,8 +117,7 @@ Exemplos de operações disponibilizadas pela API:
 * Criar comentários.
 * Editar comentários.
 * Excluir comentários.
-* Editar resenhas.
-* Gerenciar listas de leitura.
+* Editar resenhas
 * Autenticação de usuários.
 
 ## Limitações
@@ -138,4 +126,3 @@ Exemplos de operações disponibilizadas pela API:
 * Não há integração com serviços externos de livros ou avaliações.
 * As funcionalidades dependem da disponibilidade do servidor PHP e do banco de dados.
 * O sistema foi desenvolvido para fins acadêmicos e pode exigir melhorias adicionais de segurança e escalabilidade para uso em produção.
->>>>>>> 1a046c96c77f31cd6f3a04cb308000946ca5fe3f

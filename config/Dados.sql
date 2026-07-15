@@ -41,9 +41,6 @@ INSERT INTO editora (ideditora, nomeeditora) VALUES (7, 'É Realizações');
 
 
 -- Leitor
-INSERT INTO leitor (idleitor, nomeleitor, sobrenomeleitor, apelidoleitor, emailleitor, senhaleitor, datanascleitor, bioleitor, fotoleitor, admin) VALUES (23, 'Jose', 'Castro', 'castro', 'jose@gmail.com', '$2y$12$K0pfOKzGueNP7.pKmHwKnOYresof99G7.xc4jDLsC686XEfU0UKhm', '2007-02-12', NULL, '', false);
-INSERT INTO leitor (idleitor, nomeleitor, sobrenomeleitor, apelidoleitor, emailleitor, senhaleitor, datanascleitor, bioleitor, fotoleitor, admin) VALUES (24, 'Amigo', 'amigo', 'amigo', 'amigo@gmail.com', '$2y$12$6hAut4Irn8scj37xOdOzc.ZPwtRtAOh6Md9DYDo7lGZgmM5IZ55Fi', '2007-02-25', NULL, '', false);
-INSERT INTO leitor (idleitor, nomeleitor, sobrenomeleitor, apelidoleitor, emailleitor, senhaleitor, datanascleitor, bioleitor, fotoleitor, admin) VALUES (25, 'Carlao', 'Nobre', 'carlao', 'carlao@gmail.com', '$2y$12$EPbBDtWwVtF8w/PVWwsuPuD9cvIAdwRIwTvxcLzG.w7Q8Ej6.ShH2', '2007-02-12', NULL, 'default.webp', false);
 INSERT INTO leitor (idleitor, nomeleitor, sobrenomeleitor, apelidoleitor, emailleitor, senhaleitor, datanascleitor, bioleitor, fotoleitor, admin) VALUES (22, 'Administrador', 'Administrador', 'adm', 'adm@gmail.com', '$2y$12$ik.UqSMgF/HZxRp/PYVqW.rZyGBhuFPNccyS5cp188RvtJCgG71Hm', '2008-02-12', 'Sou o adm mais foda! Quero ver peitar!', '6xPkU5RU.jpg', true);
 
 

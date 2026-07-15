@@ -1,6 +1,4 @@
-<<<<<<< HEAD
-    
-=======
+
 # Objetivo do Projeto
 
 O projeto foi desenvolvido para as disciplinas de Desenvolvimento Back-End I e Desenvolvimento Front-End I com o objetivo de aplicar na prática os conceitos estudados durante o curso. A aplicação consiste em uma plataforma de avaliações e resenhas literárias, permitindo que leitores compartilhem opiniões sobre livros, publiquem comentários e gerenciem suas informações pessoais.
